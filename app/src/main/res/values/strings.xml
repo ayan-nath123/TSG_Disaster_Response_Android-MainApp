@@ -14,4 +14,6 @@
     <string name="emergencyphase">Emergency Phase</string>
     <string name="reliefphase">Relief Phase</string>
     <string name="dashboard">Dashboard</string>
+    <string name="update">Update Profile</string>
+    <string name="profile_submit">Submit</string>
 </resources>
