@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/round_corner1"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_network"
+            android:textSize="15sp"
+            android:textColor="@color/colorPrimaryDark"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btOpenSettings"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:text="GO TO Settings"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/round_corner1"/>
+            <Button
+                android:id="@+id/btCancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:text="cancel"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/round_corner1"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

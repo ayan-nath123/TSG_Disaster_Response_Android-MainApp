@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">TSG_Disaster_Response_App</string>
+    <string name="no_network">No Network Available Please Turn on your Network connection</string>
+    <string name="hintPassword">Password</string>
+    <string name="hintUsername">User Name</string>
+    <string name="login">Login </string>
+    <color name="textcolor">#757575</color>
+    <string name="otpLogin">OTP Login</string>
+    <string name="qrLogin">QR Login</string>
+    <string name="Register_this">DON\'T HAVE AN ACCOUNT</string>
+    <string name="signup">Sign Up</string>
+</resources>
