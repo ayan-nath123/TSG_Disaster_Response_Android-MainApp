@@ -9,4 +9,9 @@
     <string name="qrLogin">QR Login</string>
     <string name="Register_this">DON\'T HAVE AN ACCOUNT</string>
     <string name="signup">Sign Up</string>
+    <string name="myActivity">My Activity</string>
+    <string name="approval">Approval</string>
+    <string name="emergencyphase">Emergency Phase</string>
+    <string name="reliefphase">Relief Phase</string>
+    <string name="dashboard">Dashboard</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.tts.www.tsg_disaster_response_app.activity;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,11 +56,13 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View v){
         switch (v.getId()){
             case R.id.login_submit:
-                if(isValid()){
+            /*    if(isValid()){
                     if(IsNetworkAvailable()){
                         Login();
                     }
-                }
+                }*/
+                Intent intent = new Intent(LoginActivity.this,MainPage.class);
+                startActivity(intent);
                 break;
             case R.id.otp_login:
                 Toasty.info(this, "This page is Under Developement",Toast.LENGTH_SHORT,true).show();
