@@ -4,67 +4,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.Profile"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activity.Profile">
 
-    <include layout="@layout/toolbarlayout"/>
+    <include layout="@layout/toolbarlayout" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp">
+                android:orientation="vertical">
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
 
                     <EditText
                         android:id="@+id/et_prof_fullName"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                        android:gravity="center_vertical"
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/textcolor"
-                        android:hint="Full Name" />
+                        android:gravity="center_vertical"
+                        android:hint="Full Name"
+                        android:textColor="@color/textcolor" />
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
                     android:text="Gender"
-                    android:textSize="16sp"
-                    android:layout_marginTop="10dp"/>
+                    android:textSize="16sp" />
 
                 <RadioGroup
                     android:id="@+id/rg_prof_gender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:orientation="horizontal">
+
                     <RadioButton
                         android:id="@+id/rb_prof_male"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="Male"/>
+                        android:text="Male" />
+
                     <RadioButton
                         android:id="@+id/rb_prof_female"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="Female"/>
+                        android:text="Female" />
                 </RadioGroup>
 
                 <LinearLayout
                     android:id="@+id/ll_prof_dob"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="0dp"
@@ -76,52 +87,66 @@
                             android:id="@+id/et_prof_DateofBirth"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="Date of Birth" />
+                            android:layout_marginTop="5dp"
+                            android:hint="Date of Birth"
+                            android:textColor="@color/textcolor" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
 
                     <EditText
                         android:id="@+id/et_prof_email"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                        android:gravity="center_vertical"
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/textcolor"
-                        android:hint="Email Id" />
+                        android:gravity="center_vertical"
+                        android:hint="Email Id"
+                        android:textColor="@color/textcolor" />
                 </android.support.design.widget.TextInputLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
 
                     <EditText
                         android:id="@+id/et_prof_Mobile"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                        android:gravity="center_vertical"
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/textcolor"
-                        android:hint="Phone Number" />
+                        android:gravity="center_vertical"
+                        android:hint="Phone Number"
+                        android:textColor="@color/textcolor" />
                 </android.support.design.widget.TextInputLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
 
                     <EditText
                         android:id="@+id/et_prof_OrganisationName"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                        android:gravity="center_vertical"
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/textcolor"
-                        android:hint="Organisation Name" />
+                        android:gravity="center_vertical"
+                        android:hint="Organisation Name"
+                        android:textColor="@color/textcolor" />
                 </android.support.design.widget.TextInputLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="0dp"
@@ -133,7 +158,9 @@
                             android:id="@+id/et_prof_language"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="Language Known" />
+                            android:layout_marginTop="5dp"
+                            android:hint="Language Known"
+                            android:textColor="@color/textcolor" />
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
@@ -141,9 +168,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
                     android:text="Current location"
-                    android:textSize="16sp"
-                    android:layout_marginTop="10dp"/>
+                    android:textSize="16sp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -151,38 +180,51 @@
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp">
+
                         <EditText
                             android:id="@+id/et_prof_state"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="State" />
+                            android:layout_marginTop="5dp"
+                            android:hint="State"
+                            android:textColor="@color/textcolor" />
 
                     </android.support.design.widget.TextInputLayout>
                 </RelativeLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
 
                     <EditText
                         android:id="@+id/et_prof_location"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                        android:gravity="center_vertical"
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/textcolor"
-                        android:hint="Location" />
+                        android:gravity="center_vertical"
+                        android:hint="Location"
+                        android:textColor="@color/textcolor" />
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
                     android:text="Emergency Contact"
-                    android:textSize="16sp"
-                    android:layout_marginTop="10dp"/>
+                    android:textSize="16sp" />
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
 
                     <EditText
                         android:id="@+id/et_prof_emer_name"
@@ -196,7 +238,9 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
 
                     <EditText
                         android:id="@+id/et_prof_emer_mobile"
@@ -210,7 +254,9 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
 
                     <EditText
                         android:id="@+id/et_prof_emer_relation"
@@ -223,39 +269,43 @@
                         android:textColor="@color/textcolor" />
                 </android.support.design.widget.TextInputLayout>
 
+                <LinearLayout
+                    android:id="@+id/ll_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorPrimaryDark">
+
+                    <TextView
+                        android:id="@+id/updateProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/update"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_submit_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorPrimaryDark"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/submit_update_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/profile_submit"
+                        android:textColor="@color/white" />
+                </LinearLayout>
 
             </LinearLayout>
 
         </ScrollView>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorPrimaryDark">
-            <TextView
-                android:id="@+id/updateProfile"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/update"
-                android:textColor="@color/white"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorPrimaryDark"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/submit_update_profile"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/profile_submit"
-                android:textColor="@color/white"/>
-        </LinearLayout>
+
     </RelativeLayout>
-
-
 
 </LinearLayout>
