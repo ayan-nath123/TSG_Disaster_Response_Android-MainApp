@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -33,7 +34,7 @@ import es.dmoral.toasty.Toasty;
 
 public class Profile extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
 
-    TextView volFullName, volDateOfBirth, volEMail, volMobileNo, volOrgName, volLanguage, volState, volLocation, volEmerfullName, volEmerMobileNo, volEmerRelation;
+    EditText volFullName, volDateOfBirth, volEMail, volMobileNo, volOrgName, volLanguage, volState, volLocation, volEmerfullName, volEmerMobileNo, volEmerRelation;
     RadioGroup gender;
     RadioButton male, female;
     TextView upateProfile, submitProfileUpdate;
@@ -79,7 +80,9 @@ public class Profile extends BaseActivity implements RadioGroup.OnCheckedChangeL
         submitProfileUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toasty.info(Profile.this, "This is Under Developement",Toast.LENGTH_SHORT,true).show();
+               if(isValid()) {
+                   Toasty.info(Profile.this, "This is Under Developement", Toast.LENGTH_SHORT, true).show();
+               }
         //        SubmitUpdateProfile();
             }
         });
@@ -97,6 +100,46 @@ public class Profile extends BaseActivity implements RadioGroup.OnCheckedChangeL
                 break;
         }
 
+    }
+
+    public boolean isValid(){
+        boolean flag = true;
+        if(volFullName.getText().toString().length() == 0){
+            volFullName.setError("Please Enter Full Name");
+            EditTextFocus(volFullName);
+            flag = false;
+        } else if(volDateOfBirth.getText().toString().length() == 0){
+            volDateOfBirth.setError("Please Enter Last Name");
+            flag = false;
+        } else if(volEMail.getText().toString().length() == 0){
+            volEMail.setError("Please Enter Date Of Birth");
+            flag = false;
+        } else if(volMobileNo.getText().toString().length() == 0){
+            volMobileNo.setError("Please Enter Contact Number");
+            flag = false;
+        } else if(volOrgName.getText().toString().length() == 0){
+            volOrgName.setError("Please Enter Contact Number");
+            flag = false;
+        } else if(volLanguage.getText().toString().length() == 0){
+            volLanguage.setError("Please Enter Language");
+            flag = false;
+        } else if(volState.getText().toString().length() == 0){
+            volState.setError("Please enter State");
+            flag = false;
+        } else if(volLocation.getText().toString().length() == 0){
+            volLocation.setError("Please Enter Location");
+            flag = false;
+        } else if(volEmerfullName.getText().toString().length() == 0){
+            volEmerfullName.setError("Please Enter Person Full Name to whom contact during Emergency");
+            flag = false;
+        } else if(volEmerMobileNo.getText().toString().length() == 0){
+            volEmerMobileNo.setError("Please Enter Emergency Mobile Number");
+            flag = false;
+        } else if(volEmerRelation.getText().toString().length() == 0){
+            volEmerRelation.setError("Please Enter your Relation with the person you mentioned");
+            flag = false;
+        }
+        return flag;
     }
 
     public void ShowProfile() {
