@@ -47,6 +47,9 @@ public class Profile extends BaseActivity implements RadioGroup.OnCheckedChangeL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        Toolbar();
+        setTitle("Profile");
+
         volFullName = findViewById(R.id.et_prof_fullName);
         volDateOfBirth = findViewById(R.id.et_prof_DateofBirth);
         volEMail = findViewById(R.id.et_prof_email);

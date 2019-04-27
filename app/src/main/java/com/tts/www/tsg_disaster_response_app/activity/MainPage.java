@@ -45,7 +45,7 @@ public class MainPage extends BaseActivity {
         version = findViewById(R.id.tv_version);
 
         version.setText(BuildConfig.VERSION_NAME);
-        userName.setText(app.getUserName());
+        userName.setText(app.getFirstName());
 
         llprofile.setOnClickListener(this);
         llTeam.setOnClickListener(this);

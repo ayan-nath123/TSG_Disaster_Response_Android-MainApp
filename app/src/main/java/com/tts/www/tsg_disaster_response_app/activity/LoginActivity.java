@@ -88,8 +88,18 @@ public class LoginActivity extends BaseActivity {
                             JSONObject object = new JSONObject(response);
                             if (object.has("status")) {
                                 app.setAccessToken(object.getString("access Token"));
-                                app.seteMail(object.getString("Gender"));
-                                app.setPhoneNumber(object.getString("Phonenumber"));
+                                app.setToken_type(object.getString("token_type"));
+                                app.setExpires_in(object.getString("expires_in"));
+                                app.setStatus(object.getString("status"));
+                                app.setResponse(object.getString("response"));
+                                app.setUser_id(object.getString("USER_ID"));
+                                app.setFirstName(object.getString("FIRST_NAME"));
+                                app.setInitialLogin(object.getString("INITIAL_LOGIN"));
+                                app.setTemp_login(object.getString("TEMP_LOGIN"));
+                                app.setPasswordExpires(object.getString("PASSWORD_EXPIRE"));
+                                app.setSystemRoleId(object.getString("SYSTEM_ROLE_ID"));
+                                app.setIssued(object.getString(".issued"));
+                                app.setExpires(object.getString(".expires"));
                                 FinishIntent(MainActivity.class);
                                 LoginActivity.this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                 Toasty.success(LoginActivity.this, "Login Sucessful", Toast.LENGTH_SHORT, true).show();
