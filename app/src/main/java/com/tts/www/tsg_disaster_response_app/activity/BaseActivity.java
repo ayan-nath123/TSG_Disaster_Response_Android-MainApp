@@ -77,14 +77,11 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
     //*************Internet Connection checking***********//
     public void showProgressDailog() {
-        if (!prsDlg.isShowing()) {
             prsDlg.setMessage("Please wait...");
             prsDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            prsDlg.setIndeterminate(true);
+            //prsDlg.setIndeterminate(true);
             prsDlg.setCancelable(false);
             prsDlg.show();
-        }
-
     }
 
     public void dismissProgressDialog() {

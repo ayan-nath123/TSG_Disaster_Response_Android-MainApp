@@ -56,13 +56,13 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View v){
         switch (v.getId()){
             case R.id.login_submit:
-            /*    if(isValid()){
+                if(isValid()){
                     if(IsNetworkAvailable()){
                         Login();
                     }
-                }*/
-                Intent intent = new Intent(LoginActivity.this,MainPage.class);
-                startActivity(intent);
+                }
+                /*Intent intent = new Intent(LoginActivity.this,MainPage.class);
+                startActivity(intent);*/
                 break;
             case R.id.otp_login:
                 Toasty.info(this, "This page is Under Developement",Toast.LENGTH_SHORT,true).show();
@@ -77,17 +77,19 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void Login() {
-        String url = "";
+        String url = "http://devwebapi.tatadisasterresponse.com/api/user-login";
+        Log.d("!!!url", url);
         showProgressDailog();
         StringRequest loginRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.i("!!!Response", response);
+                        dismissProgressDialog();
                         try {
                             JSONObject object = new JSONObject(response);
                             if (object.has("status")) {
-                                app.setAccessToken(object.getString("access Token"));
+                                app.setAccessToken(object.getString("access_token"));
                                 app.setToken_type(object.getString("token_type"));
                                 app.setExpires_in(object.getString("expires_in"));
                                 app.setStatus(object.getString("status"));
@@ -100,7 +102,8 @@ public class LoginActivity extends BaseActivity {
                                 app.setSystemRoleId(object.getString("SYSTEM_ROLE_ID"));
                                 app.setIssued(object.getString(".issued"));
                                 app.setExpires(object.getString(".expires"));
-                                FinishIntent(MainActivity.class);
+                                Intent intent = new Intent(LoginActivity.this,MainPage.class);
+                                startActivity(intent);
                                 LoginActivity.this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                 Toasty.success(LoginActivity.this, "Login Sucessful", Toast.LENGTH_SHORT, true).show();
                             } else {
@@ -115,6 +118,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.i("!!!Error", error.toString());
+                dismissProgressDialog();
                 Toasty.error(LoginActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT, true).show();
             }
         }
@@ -135,9 +139,11 @@ public class LoginActivity extends BaseActivity {
             public Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> pars = new HashMap<String, String>();
                 pars.put("username", userName.getText().toString().trim());
-                pars.put("password", SHAEncryption.getSHA(password.getText().toString().trim()));
+            //    pars.put("password", SHAEncryption.getSHA(password.getText().toString().trim()));
+                pars.put("password",password.getText().toString());
                 pars.put("grant_type", "password");
-                Log.i("!!!Password", SHAEncryption.getSHA(password.getText().toString().trim()));
+            //    Log.i("!!!Password", SHAEncryption.getSHA(password.getText().toString().trim()));
+                Log.i("!!!Password", password.getText().toString().trim());
                 return pars;
             }
         };
