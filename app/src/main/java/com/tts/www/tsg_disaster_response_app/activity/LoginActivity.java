@@ -102,10 +102,12 @@ public class LoginActivity extends BaseActivity {
                                 app.setSystemRoleId(object.getString("SYSTEM_ROLE_ID"));
                                 app.setIssued(object.getString(".issued"));
                                 app.setExpires(object.getString(".expires"));
+
                                 Intent intent = new Intent(LoginActivity.this,MainPage.class);
                                 startActivity(intent);
                                 LoginActivity.this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                 Toasty.success(LoginActivity.this, "Login Sucessful", Toast.LENGTH_SHORT, true).show();
+                                app.setSession(true);
                             } else {
                                 Toasty.error(LoginActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT, true).show();
                             }
