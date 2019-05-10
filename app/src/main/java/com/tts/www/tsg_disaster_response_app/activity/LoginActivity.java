@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.tts.www.tsg_disaster_response_app.R;
+import com.tts.www.tsg_disaster_response_app.constant.Constant;
 import com.tts.www.tsg_disaster_response_app.singleton.VolleySingleton;
 import com.tts.www.tsg_disaster_response_app.util.SHAEncryption;
 
@@ -77,7 +78,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void Login() {
-        String url = "http://devwebapi.tatadisasterresponse.com/api/user-login";
+        String url = Constant.LOGIN;
         Log.d("!!!url", url);
         showProgressDailog();
         StringRequest loginRequest = new StringRequest(Request.Method.POST, url,
@@ -103,8 +104,9 @@ public class LoginActivity extends BaseActivity {
                                 app.setIssued(object.getString(".issued"));
                                 app.setExpires(object.getString(".expires"));
 
-                                Intent intent = new Intent(LoginActivity.this,MainPage.class);
-                                startActivity(intent);
+                                /*Intent intent = new Intent(LoginActivity.this,MainPage.class);
+                                startActivity(intent);*/
+                                IntentWithClosePrevious(MainPage.class);
                                 LoginActivity.this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                 Toasty.success(LoginActivity.this, "Login Sucessful", Toast.LENGTH_SHORT, true).show();
                                 app.setSession(true);
