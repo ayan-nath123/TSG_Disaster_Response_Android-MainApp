@@ -2,15 +2,31 @@ package com.tts.www.tsg_disaster_response_app.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.tts.www.tsg_disaster_response_app.BuildConfig;
+import com.tts.www.tsg_disaster_response_app.Model.DisasterCode;
 import com.tts.www.tsg_disaster_response_app.R;
+import com.tts.www.tsg_disaster_response_app.constant.Constant;
+import com.tts.www.tsg_disaster_response_app.singleton.VolleySingleton;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import es.dmoral.toasty.Toasty;
 
@@ -20,6 +36,9 @@ public class MainPage extends BaseActivity {
     ImageView navigation,cloud;
     TextView userName,version;
     String itempos = "";
+    ArrayList<DisasterCode> disasterArrayList = new ArrayList<>();
+    String disastercodeId="";
+    Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +82,17 @@ public class MainPage extends BaseActivity {
         cloud.setOnClickListener(this);
 
         /*Material Spinner*/
-        MaterialSpinner spinner = (MaterialSpinner) findViewById(R.id.spinner);
+        /*MaterialSpinner spinner = (MaterialSpinner) findViewById(R.id.spinner);
         spinner.setItems("FL_UK_MAR2018","SU_WB_AUG2018","EQ_OR_SEP2017","LS_TN_JAN2019", "TO_TL_JUL2018");
         spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
 
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
                 itempos = item;
             }
-        });
-        
+        });*/
+        spinner = findViewById(R.id.disaster_code);
+        SetDisasterCode();
+
     }
 
     @Override
@@ -121,4 +142,63 @@ public class MainPage extends BaseActivity {
                 break;
         }
     }
+
+    public void SetDisasterCode(){
+        String url = "https://api.myjson.com/bins/18v246";
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url,null,
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject object = response;
+                            if (object.getString("status").equals("true")){
+                                Log.d("!!! disasterCode",object.toString());
+                                JSONArray jsonArray = object.getJSONArray("response");
+                                Log.d("!!! disasterCode",response.toString());
+                                for (int i=0;i<jsonArray.length();i++){
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    DisasterCode disasterCode = new DisasterCode();
+                                    disasterCode.setDisasterCode(jsonObject.getString("LOV_NAME"));
+                                    disasterCode.setDisasterId(jsonObject.getString("LOV_ID"));
+                                    disasterArrayList.add(disasterCode);
+                                }
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        ArrayAdapter<DisasterCode> disasterArrayAdapter = new ArrayAdapter<DisasterCode>(MainPage.this,android.R.layout.simple_list_item_1,disasterArrayList);
+                        disasterArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(disasterArrayAdapter);
+
+                        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if(position != 0 ){
+                                    disastercodeId = disasterArrayList.get(position).getDisasterId();
+
+                                    Log.d("!!!countries",disastercodeId.toString());
+                                }
+                                else {
+                                }
+                            }
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+                            }
+                        });
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", error.toString());
+                    }
+                }
+        );
+        VolleySingleton.getInstance(this).addToRequestQueue(getRequest);
+    }
+
 }
