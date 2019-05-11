@@ -34,7 +34,7 @@ public class SplashScreen extends BaseActivity implements ViewPager.OnPageChange
             public void run() {
                 Session();
             }
-        }, 4100);
+        }, 4000);
 
         viewPager = findViewById(R.id.vpDemo);
         ivIndi = findViewById(R.id.ivIndi);

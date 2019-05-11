@@ -26,7 +26,7 @@
     <RelativeLayout
         android:id="@+id/rellayout_viewpager"
         android:layout_width="250dp"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true">
         <android.support.v4.view.ViewPager

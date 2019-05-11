@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -12,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -27,6 +30,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 
@@ -43,6 +48,8 @@ public class MainPage extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main_page);
 
         llprofile = (LinearLayout) findViewById(R.id.ll_profile);
@@ -81,17 +88,10 @@ public class MainPage extends BaseActivity {
         navigation.setOnClickListener(this);
         cloud.setOnClickListener(this);
 
-        /*Material Spinner*/
-        /*MaterialSpinner spinner = (MaterialSpinner) findViewById(R.id.spinner);
-        spinner.setItems("FL_UK_MAR2018","SU_WB_AUG2018","EQ_OR_SEP2017","LS_TN_JAN2019", "TO_TL_JUL2018");
-        spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
-
-            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
-                itempos = item;
-            }
-        });*/
         spinner = findViewById(R.id.disaster_code);
-        SetDisasterCode();
+        if(IsNetworkAvailable()) {
+            SetDisasterCode();
+        }
 
     }
 
@@ -144,7 +144,7 @@ public class MainPage extends BaseActivity {
     }
 
     public void SetDisasterCode(){
-        String url = "https://api.myjson.com/bins/18v246";
+        String url = "http://Devwebapi.tatadisasterresponse.com/api/get-master-response-code";
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONObject>()
                 {
@@ -159,8 +159,8 @@ public class MainPage extends BaseActivity {
                                 for (int i=0;i<jsonArray.length();i++){
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                                     DisasterCode disasterCode = new DisasterCode();
-                                    disasterCode.setDisasterCode(jsonObject.getString("LOV_NAME"));
-                                    disasterCode.setDisasterId(jsonObject.getString("LOV_ID"));
+                                    disasterCode.setDisasterCode(jsonObject.getString("RESPONSE_CODE"));
+                                    disasterCode.setDisasterId(jsonObject.getString("CODE_MASTER_SYS_ID"));
                                     disasterArrayList.add(disasterCode);
                                 }
 
@@ -177,9 +177,9 @@ public class MainPage extends BaseActivity {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if(position != 0 ){
-                                    disastercodeId = disasterArrayList.get(position).getDisasterId();
+                                    disastercodeId = disasterArrayList.get(position).getDisasterCode();
 
-                                    Log.d("!!!countries",disastercodeId.toString());
+                                    Log.d("!!!disasterCode",disastercodeId.toString());
                                 }
                                 else {
                                 }
@@ -196,8 +196,13 @@ public class MainPage extends BaseActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Error.Response", error.toString());
                     }
-                }
-        );
+                }) {
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "bearer "+app.getAccessToken());
+                return headers;
+            }
+        };
         VolleySingleton.getInstance(this).addToRequestQueue(getRequest);
     }
 
