@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Team.Team"></activity>
+        <activity android:name=".Team.Team"
+            android:parentActivityName=".activity.MainPage"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait" />
