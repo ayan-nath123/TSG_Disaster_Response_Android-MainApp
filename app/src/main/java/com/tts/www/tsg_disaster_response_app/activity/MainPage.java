@@ -23,6 +23,7 @@ import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.tts.www.tsg_disaster_response_app.BuildConfig;
 import com.tts.www.tsg_disaster_response_app.Model.DisasterCode;
 import com.tts.www.tsg_disaster_response_app.R;
+import com.tts.www.tsg_disaster_response_app.Team.Team;
 import com.tts.www.tsg_disaster_response_app.constant.Constant;
 import com.tts.www.tsg_disaster_response_app.singleton.VolleySingleton;
 
@@ -48,8 +49,8 @@ public class MainPage extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        /*requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         setContentView(R.layout.activity_main_page);
 
         llprofile = (LinearLayout) findViewById(R.id.ll_profile);
@@ -102,7 +103,7 @@ public class MainPage extends BaseActivity {
                 IntentOnly(Profile.class);
                 break;
             case R.id.ll_team:
-                Toasty.info(this, "This is team view", Toasty.LENGTH_SHORT,true).show();
+                IntentOnly(Team.class);
                 break;
             case R.id.ll_myActivity:
                 Toasty.info(this, "This is Activity view", Toasty.LENGTH_SHORT,true).show();
@@ -144,7 +145,7 @@ public class MainPage extends BaseActivity {
     }
 
     public void SetDisasterCode(){
-        String url = "http://Devwebapi.tatadisasterresponse.com/api/get-master-response-code";
+        String url = Constant.GET_MASTER_RESPONSE_CODE;
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url,null,
                 new Response.Listener<JSONObject>()
                 {

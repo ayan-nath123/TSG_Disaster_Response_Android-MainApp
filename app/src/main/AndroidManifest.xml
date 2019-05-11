@@ -13,22 +13,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".activity.Profile"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".activity.MainPage"/>
-
-        <activity android:name=".activity.MainPage"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".activity.LoginActivity"/>
-
-        <activity android:name=".activity.LoginActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".activity.SplashScreen"/>
-
-        <activity android:name=".activity.SplashScreen"
+        <activity android:name=".Team.Team"></activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.Profile"
+            android:parentActivityName=".activity.MainPage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MainPage"
+            android:parentActivityName=".activity.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:parentActivityName=".activity.SplashScreen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SplashScreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

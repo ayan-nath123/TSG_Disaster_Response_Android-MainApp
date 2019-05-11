@@ -99,7 +99,6 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     public void IntentOnly(Class intentClass){
         Intent intent = new Intent(getApplicationContext(),intentClass);
         startActivity(intent);
-        finish();
     }
 
     //Intent with Close all previous Activity
