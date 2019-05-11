@@ -1,5 +1,6 @@
 package com.tts.www.tsg_disaster_response_app.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -103,7 +104,9 @@ public class MainPage extends BaseActivity {
                 IntentOnly(Profile.class);
                 break;
             case R.id.ll_team:
-                IntentOnly(Team.class);
+                Intent intentteam = new Intent(MainPage.this,Team.class);
+                intentteam.putExtra("SpinnerName", disastercodeId);
+                startActivity(intentteam);
                 break;
             case R.id.ll_myActivity:
                 Toasty.info(this, "This is Activity view", Toasty.LENGTH_SHORT,true).show();
