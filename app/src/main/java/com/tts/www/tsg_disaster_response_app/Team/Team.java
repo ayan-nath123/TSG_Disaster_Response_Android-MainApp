@@ -1,16 +1,26 @@
 package com.tts.www.tsg_disaster_response_app.Team;
 
+
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.tts.www.tsg_disaster_response_app.Model.RoleModel;
 import com.tts.www.tsg_disaster_response_app.Model.TeamModel;
 import com.tts.www.tsg_disaster_response_app.R;
 import com.tts.www.tsg_disaster_response_app.activity.BaseActivity;
@@ -21,8 +31,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Team extends BaseActivity {
@@ -32,6 +46,18 @@ public class Team extends BaseActivity {
     TeamAdapter teamAdapter;
     ArrayList<TeamModel> teamModelArray = new ArrayList<>();
     RecyclerView recyclerView;
+    int count = 0 ;
+    private DatePickerDialog startDatePickerDialog;
+    private SimpleDateFormat dateFormatter;
+    ArrayList<RoleModel> roleArrayList = new ArrayList<>();
+    String[] listRoles;
+    boolean[] chekedItemsRoles;
+    ArrayList<Integer> mUserItemsRoles = new ArrayList<>();
+
+    LinearLayout ll_filter_list,ll_role,ll_organisation,ll_start_date,ll_end_date,ll_location;
+    TextView tv_role,tv_organisation,tv_startdate,tv_enddate,tv_location,tv_submit_done;
+
+    String item="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +66,8 @@ public class Team extends BaseActivity {
 
         Toolbar();
         setTitle("Team");
+
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
         SpinnerName = getIntent().getStringExtra("SpinnerName");
         spinner = findViewById(R.id.spinner_input);
@@ -51,6 +79,58 @@ public class Team extends BaseActivity {
         recyclerView.setAdapter(teamAdapter);
         showTeamList();
 
+        ll_filter_list = findViewById(R.id.ll_filter_list);
+        ll_role = findViewById(R.id.ll_role);
+        ll_organisation = findViewById(R.id.ll_organisation);
+        ll_start_date = findViewById(R.id.ll_start_date);
+        ll_end_date = findViewById(R.id.ll_end_date);
+        ll_location = findViewById(R.id.ll_location);
+
+        tv_role = findViewById(R.id.tv_role);
+        tv_organisation = findViewById(R.id.tv_organisation);
+        tv_startdate = findViewById(R.id.tv_startdate);
+        tv_enddate = findViewById(R.id.tv_enddate);
+        tv_location = findViewById(R.id.tv_location);
+        tv_submit_done = findViewById(R.id.tv_submit_done);
+
+        ll_filter_list.setOnClickListener(this);
+        ll_role.setOnClickListener(this);
+        ll_organisation.setOnClickListener(this);
+        ll_start_date.setOnClickListener(this);
+        ll_end_date.setOnClickListener(this);
+        ll_location.setOnClickListener(this);
+        tv_submit_done.setOnClickListener(this);
+
+        //For setting the roles arraylist
+        showRole();
+
+        ShowRoleName();
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ll_filter_list:
+                break;
+            case R.id.ll_role:
+                break;
+            case R.id.ll_organisation:
+                break;
+            case R.id.ll_start_date:
+                startDate();
+                break;
+            case R.id.ll_end_date:
+                endDate();
+                break;
+            case R.id.ll_location:
+                break;
+            case R.id.tv_submit_done:
+                break;
+                default:
+                    break;
+
+        }
     }
 
     public void showTeamList(){
@@ -96,5 +176,124 @@ public class Team extends BaseActivity {
             }
         }*/;
         VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
+    }
+
+    public void startDate(){
+        ll_start_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar newCalendar = Calendar.getInstance();
+                startDatePickerDialog = new DatePickerDialog(Team.this, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+                        tv_startdate.setText(dateFormatter.format(newDate.getTime()));
+                    }
+
+                },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+                startDatePickerDialog.show();
+            }
+        });
+    }
+    public void endDate(){
+        Calendar newCalendar = Calendar.getInstance();
+        startDatePickerDialog = new DatePickerDialog(Team.this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                tv_enddate.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        startDatePickerDialog.show();
+    }
+
+    public void showRole(){
+        String url = "https://api.myjson.com/bins/crx8m";
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JSONObject object = response;
+                        try {
+                            if(object.getString("status").equals("true")){
+                                Log.d("!!!Role", object.toString());
+                                JSONArray jsonArray = object.getJSONArray("response");
+                                Log.d("!!!Role", response.toString());
+                                for(int i = 0; i<jsonArray.length();i++){
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    RoleModel roleModel = new RoleModel();
+                                //    roleModel.setRoleId(jsonObject.getString("ROLE_ID"));
+                                    roleModel.setRoleName(jsonObject.getString("ROLE_NAME"));
+                                    roleArrayList.add(roleModel);
+                                    Log.i("!!!roleArrayList", roleArrayList.toString());
+                                }
+                                ome();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("!!!ErrorRole", error.toString());
+            }
+        }/*{
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "bearer "+app.getAccessToken());
+                return headers;
+            }
+        }*/);
+
+        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
+    }
+
+    public void ShowRoleName(){
+
+        ll_role.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder =new AlertDialog.Builder(Team.this);
+                mBuilder.setTitle("Please Select Roles");
+                mBuilder.setMultiChoiceItems(listRoles, chekedItemsRoles, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if(isChecked){
+                            mUserItemsRoles.add(which);
+                        }else {
+                            mUserItemsRoles.remove(Integer.valueOf(which));
+                        }
+                    }
+                });
+                mBuilder.setCancelable(false);
+                mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for(int j = 0 ;j < mUserItemsRoles.size(); j++){
+                            item = item + listRoles[mUserItemsRoles.get(j)];
+                            if(j != mUserItemsRoles.size() - 1 ){
+                                item = item + ",";
+                            }
+                        }
+                        tv_role.setText(item);
+                    }
+                });
+                mBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+            }
+        });
+    }
+    public void ome(){
+        listRoles = roleArrayList.toArray(new String[roleArrayList.size()]);
+        Log.i("!!!listRoles", Arrays.toString(listRoles));
     }
 }

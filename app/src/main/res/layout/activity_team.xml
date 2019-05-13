@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/roundcorner15"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/ll_role"
