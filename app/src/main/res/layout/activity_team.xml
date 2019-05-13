@@ -21,8 +21,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/white"
-            android:elevation="5dp"
+            android:background="@drawable/round_corner1"
+            android:elevation="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -32,6 +32,7 @@
                 android:gravity="center"
                 android:text="Filter List"
                 android:textSize="17sp" />
+
 
         </LinearLayout>
 
@@ -217,7 +218,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview_team"
