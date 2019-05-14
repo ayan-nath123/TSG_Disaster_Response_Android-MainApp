@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/roundcorner15"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/ll_role"
@@ -63,7 +63,7 @@
                     android:layout_height="20dp"
                     android:gravity="center_vertical"
                     android:paddingLeft="20dp"
-                    android:text="Role" />
+                    android:hint="Role" />
 
             </LinearLayout>
 
@@ -91,7 +91,7 @@
                     android:layout_height="20dp"
                     android:gravity="center_vertical"
                     android:paddingLeft="20dp"
-                    android:text="Organisation" />
+                    android:hint="Organisation" />
 
             </LinearLayout>
 
@@ -125,7 +125,7 @@
                         android:layout_height="20dp"
                         android:gravity="center_vertical"
                         android:paddingLeft="20dp"
-                        android:text="Start Date" />
+                        android:hint="Start Date" />
 
                 </LinearLayout>
 
@@ -149,7 +149,7 @@
                         android:layout_height="20dp"
                         android:gravity="center_vertical"
                         android:paddingLeft="20dp"
-                        android:text="End Date" />
+                        android:hint="End Date" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -179,7 +179,7 @@
                     android:layout_height="20dp"
                     android:gravity="center_vertical"
                     android:paddingLeft="20dp"
-                    android:text="Location" />
+                    android:hint="Location" />
             </LinearLayout>
 
             <View

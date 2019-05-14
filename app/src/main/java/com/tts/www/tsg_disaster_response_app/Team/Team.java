@@ -70,10 +70,8 @@ public class Team extends BaseActivity {
     ArrayList<Integer> mUserItemsLocation = new ArrayList<>();
     String itemLoc = "";
 
-    LinearLayout ll_role,ll_organisation,ll_start_date,ll_end_date,ll_location;
+    LinearLayout ll_role,ll_organisation,ll_start_date,ll_end_date,ll_location,ll_filter_list;
     TextView filter_list, tv_role,tv_organisation,tv_startdate,tv_enddate,tv_location,tv_submit_done;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +93,7 @@ public class Team extends BaseActivity {
         recyclerView.setAdapter(teamAdapter);
         showTeamList();
 
-
+        ll_filter_list = findViewById(R.id.ll_filter_list);
         ll_role = findViewById(R.id.ll_role);
         ll_organisation = findViewById(R.id.ll_organisation);
         ll_start_date = findViewById(R.id.ll_start_date);
@@ -132,9 +130,13 @@ public class Team extends BaseActivity {
                 listRoles = roleArrayList.toArray(new String[roleArrayList.size()]);
                 listOrganisation = organisationArrayList.toArray(new String[organisationArrayList.size()]);
                 listLocation = locationArrayList.toArray(new String[locationArrayList.size()]);
-                Log.i("!!!listRoles", Arrays.toString(listRoles));
-                Log.i("!!!listOrganization",Arrays.toString(listOrganisation) );
-                Log.i("!!!listlocation", Arrays.toString(listLocation));
+                if(count == 0){
+                    ll_filter_list.setVisibility(View.VISIBLE);
+                    count = 1;
+                } else {
+                    ll_filter_list.setVisibility(View.GONE);
+                    count = 0;
+                }
                 break;
             case R.id.ll_role:
                 ShowRoleName();
@@ -152,6 +154,7 @@ public class Team extends BaseActivity {
                 ShowLocationName();
                 break;
             case R.id.tv_submit_done:
+                SubmitData();
                 break;
                 default:
                     break;
@@ -456,5 +459,58 @@ public class Team extends BaseActivity {
         });
         AlertDialog mDialog = mBuilder.create();
         mDialog.show();
+    }
+    public void SubmitData(){
+
+        String itemAll = tv_role.getText().toString()+","+tv_organisation.getText().toString()+","+tv_startdate.getText().toString()+","+tv_enddate.getText().toString()+","+tv_location.getText().toString();
+        Log.i("AllItems",itemAll);
+        Toast.makeText(this, itemAll, Toast.LENGTH_SHORT).show();
+        ll_filter_list.setVisibility(View.GONE);
+        count = 0;
+        teamModelArray.clear();
+
+        String url = "https://api.myjson.com/bins/bwi56";
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JSONObject object = response;
+                        try {
+                            if(object.getString("status").equals("true")){
+                                Log.d("!!! teamList", object.toString());
+                                JSONArray teamArray = object.getJSONArray("response");
+                                Log.d("!!! List", response.toString());
+                                for(int i = 0; i < teamArray.length(); i++){
+                                    JSONObject jsonObject = teamArray.getJSONObject(i);
+                                    TeamModel teamModel = new TeamModel();
+                                    teamModel.setTeamMemberName(jsonObject.getString("NAME"));
+                                    teamModel.setTeamMembercompany(jsonObject.getString("COMPANY"));
+                                    teamModel.setTeamMemberDesignation(jsonObject.getString("DESIGNATION"));
+                                    teamModel.setTeamMemberPhoneNo(jsonObject.getString("PHONE"));
+                                    teamModel.setTeamMemberEmail(jsonObject.getString("EMAIL"));
+                                    teamModelArray.add(teamModel);
+                                }
+                                recyclerView.setAdapter(teamAdapter);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("!!!Error", error.toString());
+                    }
+                })/*{
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "bearer "+app.getAccessToken());
+                return headers;
+            }
+        }*/;
+        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
+
+
     }
 }
