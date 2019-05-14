@@ -49,15 +49,30 @@ public class Team extends BaseActivity {
     int count = 0 ;
     private DatePickerDialog startDatePickerDialog;
     private SimpleDateFormat dateFormatter;
+    //This is for loading Roles into DialogBox
     ArrayList<String> roleArrayList = new ArrayList<>();
     String[] listRoles ;
     boolean[] chekedItemsRoles;
     ArrayList<Integer> mUserItemsRoles = new ArrayList<>();
+    String item="";
+
+    // this is for loading the Organisation into DialogBox
+    ArrayList<String> organisationArrayList = new ArrayList<>();
+    String[] listOrganisation ;
+    boolean[] chekedItemsOrganisation;
+    ArrayList<Integer> mUserItemsOrganisation = new ArrayList<>();
+    String itemOrg = "";
+
+    //This is for loading the Location into the DialogBox
+    ArrayList<String> locationArrayList = new ArrayList<>();
+    String[] listLocation;
+    boolean[] checkedItemsLocation;
+    ArrayList<Integer> mUserItemsLocation = new ArrayList<>();
 
     LinearLayout ll_role,ll_organisation,ll_start_date,ll_end_date,ll_location;
     TextView filter_list, tv_role,tv_organisation,tv_startdate,tv_enddate,tv_location,tv_submit_done;
 
-    String item="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,42 +109,30 @@ public class Team extends BaseActivity {
         tv_submit_done = findViewById(R.id.tv_submit_done);
         filter_list = findViewById(R.id.filter_list);
 
-        filter_list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(Team.this, "This is toast", Toast.LENGTH_SHORT).show();
-                listRoles = roleArrayList.toArray(new String[roleArrayList.size()]);
-                Log.i("!!!listRoles", Arrays.toString(listRoles));
-
-            }
-        });
-        ll_role.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowRoleName();
-            }
-        });
+        filter_list.setOnClickListener(this);
+        ll_role.setOnClickListener(this);
         ll_organisation.setOnClickListener(this);
         ll_start_date.setOnClickListener(this);
         ll_end_date.setOnClickListener(this);
         ll_location.setOnClickListener(this);
         tv_submit_done.setOnClickListener(this);
 
-       /* listRoles = roleArrayList.toArray(new String[roleArrayList.size()]);
-        Log.i("!!!listRoles", Arrays.toString(listRoles));*/
-        showRole();
+        ShowRole();
+        ShowOrganization();
+        ShowLocation();
 
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.ll_filter_list:
+            case R.id.filter_list:
                 Toast.makeText(this, "This is toast", Toast.LENGTH_SHORT).show();
                 listRoles = roleArrayList.toArray(new String[roleArrayList.size()]);
                 Log.i("!!!listRoles", Arrays.toString(listRoles));
                 break;
             case R.id.ll_role:
+                ShowRoleName();
                 break;
             case R.id.ll_organisation:
                 break;
@@ -192,7 +195,6 @@ public class Team extends BaseActivity {
         }*/;
         VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
     }
-
     public void startDate(){
         ll_start_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,8 +225,7 @@ public class Team extends BaseActivity {
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
         startDatePickerDialog.show();
     }
-
-    public void showRole(){
+    public void ShowRole(){
         String url = "https://api.myjson.com/bins/crx8m";
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -261,13 +262,10 @@ public class Team extends BaseActivity {
                 return headers;
             }
         }*/);
-
         VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
 
     }
-
     public void ShowRoleName(){
-
         ll_role.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -293,6 +291,7 @@ public class Team extends BaseActivity {
                                 item = item + ",";
                             }
                         }
+                    //    String some = item.replaceAll("\\s","");
                         tv_role.setText(item);
                     }
                 });
@@ -306,5 +305,106 @@ public class Team extends BaseActivity {
                 mDialog.show();
             }
         });
+    }
+    public void ShowOrganization(){
+        String url = "";
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JSONObject object = response;
+                        try {
+                            if(object.getString("status").equals("true")){
+                              Log.d("!!!Organisation", object.toString());
+                              JSONArray jsonArray = object.getJSONArray("response");
+                              Log.d("!!!Org", object.toString());
+                              for(int i = 0; i < jsonArray.length();i++){
+                                  JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                  organisationArrayList.add(jsonObject.getString(""));
+                              }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("!!!ErrorRole", error.toString());
+            }
+        })/* {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> headers = new HashMap<String, String>();
+                headers.put("Authorization","bearer "+app.getAccessToken());
+                return headers;
+            }
+        }*/;
+        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
+    }
+    public void ShowOrganisationName(){
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(Team.this);
+        mBuilder.setTitle("Please Select Organisaiton");
+        mBuilder.setMultiChoiceItems(listOrganisation, chekedItemsOrganisation, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if(isChecked){
+                    mUserItemsOrganisation.add(which);
+                } else {
+                    mUserItemsOrganisation.remove(Integer.valueOf(which));
+                }
+            }
+        });
+        mBuilder.setCancelable(false);
+        mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                for(int j = 0; j < mUserItemsOrganisation.size(); j++){
+                    itemOrg = itemOrg + listOrganisation[mUserItemsOrganisation.get(j)];
+                    if(j != mUserItemsOrganisation.size() - 1){
+                        itemOrg = itemOrg + ",";
+                    }
+                }
+                tv_organisation.setText(itemOrg);
+            }
+        });
+    }
+    public void ShowLocation(){
+        String url = "";
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JSONObject object = response;
+                        try {
+                            if(object.getString("status").equals("true")){
+                                Log.d("!!!Location", object.toString());
+                                JSONArray jsonArray = object.getJSONArray("response");
+                                Log.d("!!!Location", object.toString());
+                                for(int i = 0; i < jsonArray.length(); i++){
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    locationArrayList.add(jsonObject.getString(""));
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        })/*{
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "bearer "+app.getAccessToken());
+                return headers;
+            }
+        }*/;
+        VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
     }
 }
