@@ -49,13 +49,13 @@ public class Team extends BaseActivity {
     int count = 0 ;
     private DatePickerDialog startDatePickerDialog;
     private SimpleDateFormat dateFormatter;
-    ArrayList<RoleModel> roleArrayList = new ArrayList<>();
-    String[] listRoles;
+    ArrayList<String> roleArrayList = new ArrayList<>();
+    String[] listRoles ;
     boolean[] chekedItemsRoles;
     ArrayList<Integer> mUserItemsRoles = new ArrayList<>();
 
-    LinearLayout ll_filter_list,ll_role,ll_organisation,ll_start_date,ll_end_date,ll_location;
-    TextView tv_role,tv_organisation,tv_startdate,tv_enddate,tv_location,tv_submit_done;
+    LinearLayout ll_role,ll_organisation,ll_start_date,ll_end_date,ll_location;
+    TextView filter_list, tv_role,tv_organisation,tv_startdate,tv_enddate,tv_location,tv_submit_done;
 
     String item="";
 
@@ -79,7 +79,7 @@ public class Team extends BaseActivity {
         recyclerView.setAdapter(teamAdapter);
         showTeamList();
 
-        ll_filter_list = findViewById(R.id.ll_filter_list);
+
         ll_role = findViewById(R.id.ll_role);
         ll_organisation = findViewById(R.id.ll_organisation);
         ll_start_date = findViewById(R.id.ll_start_date);
@@ -92,19 +92,32 @@ public class Team extends BaseActivity {
         tv_enddate = findViewById(R.id.tv_enddate);
         tv_location = findViewById(R.id.tv_location);
         tv_submit_done = findViewById(R.id.tv_submit_done);
+        filter_list = findViewById(R.id.filter_list);
 
-        ll_filter_list.setOnClickListener(this);
-        ll_role.setOnClickListener(this);
+        filter_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(Team.this, "This is toast", Toast.LENGTH_SHORT).show();
+                listRoles = roleArrayList.toArray(new String[roleArrayList.size()]);
+                Log.i("!!!listRoles", Arrays.toString(listRoles));
+
+            }
+        });
+        ll_role.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowRoleName();
+            }
+        });
         ll_organisation.setOnClickListener(this);
         ll_start_date.setOnClickListener(this);
         ll_end_date.setOnClickListener(this);
         ll_location.setOnClickListener(this);
         tv_submit_done.setOnClickListener(this);
 
-        //For setting the roles arraylist
+       /* listRoles = roleArrayList.toArray(new String[roleArrayList.size()]);
+        Log.i("!!!listRoles", Arrays.toString(listRoles));*/
         showRole();
-
-        ShowRoleName();
 
     }
 
@@ -112,6 +125,9 @@ public class Team extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ll_filter_list:
+                Toast.makeText(this, "This is toast", Toast.LENGTH_SHORT).show();
+                listRoles = roleArrayList.toArray(new String[roleArrayList.size()]);
+                Log.i("!!!listRoles", Arrays.toString(listRoles));
                 break;
             case R.id.ll_role:
                 break;
@@ -160,7 +176,6 @@ public class Team extends BaseActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -223,13 +238,12 @@ public class Team extends BaseActivity {
                                 Log.d("!!!Role", response.toString());
                                 for(int i = 0; i<jsonArray.length();i++){
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    RoleModel roleModel = new RoleModel();
+                                //    RoleModel roleModel = new RoleModel();
                                 //    roleModel.setRoleId(jsonObject.getString("ROLE_ID"));
-                                    roleModel.setRoleName(jsonObject.getString("ROLE_NAME"));
-                                    roleArrayList.add(roleModel);
+                                //    roleModel.setRoleName(jsonObject.getString("ROLE_NAME"));
+                                    roleArrayList.add(jsonObject.getString("ROLE_NAME"));
                                     Log.i("!!!roleArrayList", roleArrayList.toString());
                                 }
-                                ome();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -249,6 +263,7 @@ public class Team extends BaseActivity {
         }*/);
 
         VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
+
     }
 
     public void ShowRoleName(){
@@ -291,9 +306,5 @@ public class Team extends BaseActivity {
                 mDialog.show();
             }
         });
-    }
-    public void ome(){
-        listRoles = roleArrayList.toArray(new String[roleArrayList.size()]);
-        Log.i("!!!listRoles", Arrays.toString(listRoles));
     }
 }

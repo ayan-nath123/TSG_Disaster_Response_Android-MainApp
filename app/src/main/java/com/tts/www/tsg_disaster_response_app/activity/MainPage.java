@@ -23,12 +23,14 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.tts.www.tsg_disaster_response_app.BuildConfig;
 import com.tts.www.tsg_disaster_response_app.Model.DisasterCode;
+import com.tts.www.tsg_disaster_response_app.Model.RoleModel;
 import com.tts.www.tsg_disaster_response_app.R;
 import com.tts.www.tsg_disaster_response_app.Team.Team;
 import com.tts.www.tsg_disaster_response_app.constant.Constant;
 import com.tts.www.tsg_disaster_response_app.singleton.VolleySingleton;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -209,5 +211,6 @@ public class MainPage extends BaseActivity {
         };
         VolleySingleton.getInstance(this).addToRequestQueue(getRequest);
     }
+
 
 }
