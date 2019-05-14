@@ -68,6 +68,7 @@ public class Team extends BaseActivity {
     String[] listLocation;
     boolean[] checkedItemsLocation;
     ArrayList<Integer> mUserItemsLocation = new ArrayList<>();
+    String itemLoc = "";
 
     LinearLayout ll_role,ll_organisation,ll_start_date,ll_end_date,ll_location;
     TextView filter_list, tv_role,tv_organisation,tv_startdate,tv_enddate,tv_location,tv_submit_done;
@@ -135,6 +136,7 @@ public class Team extends BaseActivity {
                 ShowRoleName();
                 break;
             case R.id.ll_organisation:
+                ShowOrganisationName();
                 break;
             case R.id.ll_start_date:
                 startDate();
@@ -143,6 +145,7 @@ public class Team extends BaseActivity {
                 endDate();
                 break;
             case R.id.ll_location:
+                ShowLocationName();
                 break;
             case R.id.tv_submit_done:
                 break;
@@ -406,5 +409,40 @@ public class Team extends BaseActivity {
             }
         }*/;
         VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
+    }
+    public void ShowLocationName(){
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(Team.this);
+        mBuilder.setTitle("Please Select Location");
+        mBuilder.setMultiChoiceItems(listLocation, checkedItemsLocation, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if(isChecked){
+                    mUserItemsLocation.add(which);
+                } else {
+                    mUserItemsLocation.remove(Integer.valueOf(which));
+                }
+            }
+        });
+        mBuilder.setCancelable(false);
+        mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                for(int j = 0; j < mUserItemsLocation.size();j++){
+                    itemLoc = itemLoc + listLocation[mUserItemsLocation.get(j)];
+                    if(j != mUserItemsLocation.size() - 1){
+                        itemLoc = itemLoc + ",";
+                    }
+                }
+                tv_location.setText(itemLoc);
+            }
+        });
+        mBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
     }
 }
