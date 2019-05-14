@@ -130,7 +130,11 @@ public class Team extends BaseActivity {
             case R.id.filter_list:
                 Toast.makeText(this, "This is toast", Toast.LENGTH_SHORT).show();
                 listRoles = roleArrayList.toArray(new String[roleArrayList.size()]);
+                listOrganisation = organisationArrayList.toArray(new String[organisationArrayList.size()]);
+                listLocation = locationArrayList.toArray(new String[locationArrayList.size()]);
                 Log.i("!!!listRoles", Arrays.toString(listRoles));
+                Log.i("!!!listOrganization",Arrays.toString(listOrganisation) );
+                Log.i("!!!listlocation", Arrays.toString(listLocation));
                 break;
             case R.id.ll_role:
                 ShowRoleName();
@@ -269,9 +273,9 @@ public class Team extends BaseActivity {
 
     }
     public void ShowRoleName(){
-        ll_role.setOnClickListener(new View.OnClickListener() {
+       /* ll_role.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {*/
                 AlertDialog.Builder mBuilder =new AlertDialog.Builder(Team.this);
                 mBuilder.setTitle("Please Select Roles");
                 mBuilder.setMultiChoiceItems(listRoles, chekedItemsRoles, new DialogInterface.OnMultiChoiceClickListener() {
@@ -306,11 +310,11 @@ public class Team extends BaseActivity {
                 });
                 AlertDialog mDialog = mBuilder.create();
                 mDialog.show();
-            }
-        });
+            /*}
+        });*/
     }
     public void ShowOrganization(){
-        String url = "";
+        String url = "https://api.myjson.com/bins/jc6pu";
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -323,7 +327,7 @@ public class Team extends BaseActivity {
                               Log.d("!!!Org", object.toString());
                               for(int i = 0; i < jsonArray.length();i++){
                                   JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                  organisationArrayList.add(jsonObject.getString(""));
+                                  organisationArrayList.add(jsonObject.getString("ORGANIZATION"));
                               }
                             }
                         } catch (JSONException e) {
@@ -372,9 +376,17 @@ public class Team extends BaseActivity {
                 tv_organisation.setText(itemOrg);
             }
         });
+        mBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
     }
     public void ShowLocation(){
-        String url = "";
+        String url = "https://api.myjson.com/bins/131mua";
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -387,7 +399,7 @@ public class Team extends BaseActivity {
                                 Log.d("!!!Location", object.toString());
                                 for(int i = 0; i < jsonArray.length(); i++){
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    locationArrayList.add(jsonObject.getString(""));
+                                    locationArrayList.add(jsonObject.getString("LOCATION"));
                                 }
                             }
                         } catch (JSONException e) {
