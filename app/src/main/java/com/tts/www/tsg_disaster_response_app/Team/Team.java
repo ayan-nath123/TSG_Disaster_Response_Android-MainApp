@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,32 +47,33 @@ public class Team extends BaseActivity {
     TeamAdapter teamAdapter;
     ArrayList<TeamModel> teamModelArray = new ArrayList<>();
     RecyclerView recyclerView;
-    int count = 0 ;
+    int count = 0;
     private DatePickerDialog startDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     //This is for loading Roles into DialogBox
     ArrayList<String> roleArrayList = new ArrayList<>();
-    String[] listRoles ;
+    String[] listRoles;
     boolean[] chekedItemsRoles;
     ArrayList<Integer> mUserItemsRoles = new ArrayList<>();
-    String item="";
+    //String item = "";
+
 
     // this is for loading the Organisation into DialogBox
     ArrayList<String> organisationArrayList = new ArrayList<>();
-    String[] listOrganisation ;
+    String[] listOrganisation;
     boolean[] chekedItemsOrganisation;
     ArrayList<Integer> mUserItemsOrganisation = new ArrayList<>();
-    String itemOrg = "";
+    //String itemOrg = "";
 
     //This is for loading the Location into the DialogBox
     ArrayList<String> locationArrayList = new ArrayList<>();
     String[] listLocation;
     boolean[] checkedItemsLocation;
     ArrayList<Integer> mUserItemsLocation = new ArrayList<>();
-    String itemLoc = "";
+    //String itemLoc = "";
 
-    LinearLayout ll_role,ll_organisation,ll_start_date,ll_end_date,ll_location,ll_filter_list;
-    TextView filter_list, tv_role,tv_organisation,tv_startdate,tv_enddate,tv_location,tv_submit_done;
+    LinearLayout ll_role, ll_organisation, ll_start_date, ll_end_date, ll_location, ll_filter_list;
+    TextView filter_list, tv_role, tv_organisation, tv_startdate, tv_enddate, tv_location, tv_submit_done;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +89,7 @@ public class Team extends BaseActivity {
         spinner = findViewById(R.id.spinner_input);
         spinner.setText(SpinnerName);
 
-        teamAdapter= new TeamAdapter(this,teamModelArray);
+        teamAdapter = new TeamAdapter(this, teamModelArray);
         recyclerView = findViewById(R.id.recyclerview_team);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(teamAdapter);
@@ -124,13 +126,25 @@ public class Team extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.filter_list:
                 Toast.makeText(this, "This is toast", Toast.LENGTH_SHORT).show();
+                //this is for inserting elements into roles list
                 listRoles = roleArrayList.toArray(new String[roleArrayList.size()]);
+                chekedItemsRoles = new boolean[listRoles.length];
+                /*for(int i = 0 ; i < listRoles.length ; i++){
+                    chekedItemsRoles[i] = false;
+                }*/
+                //this is for inserting elements into Organisation list
                 listOrganisation = organisationArrayList.toArray(new String[organisationArrayList.size()]);
+                chekedItemsOrganisation = new boolean[listOrganisation.length];
+
+                //this is for inserting elements into location list
                 listLocation = locationArrayList.toArray(new String[locationArrayList.size()]);
-                if(count == 0){
+                checkedItemsLocation = new boolean[listLocation.length];
+
+                //for setting visibility of the filter List
+                if (count == 0) {
                     ll_filter_list.setVisibility(View.VISIBLE);
                     count = 1;
                 } else {
@@ -156,13 +170,13 @@ public class Team extends BaseActivity {
             case R.id.tv_submit_done:
                 SubmitData();
                 break;
-                default:
-                    break;
+            default:
+                break;
 
         }
     }
 
-    public void showTeamList(){
+    public void showTeamList() {
         String url = "https://api.myjson.com/bins/125jo6";
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -170,11 +184,11 @@ public class Team extends BaseActivity {
                     public void onResponse(JSONObject response) {
                         JSONObject object = response;
                         try {
-                            if(object.getString("status").equals("true")){
+                            if (object.getString("status").equals("true")) {
                                 Log.d("!!! teamList", object.toString());
                                 JSONArray teamArray = object.getJSONArray("response");
                                 Log.d("!!! List", response.toString());
-                                for(int i = 0; i < teamArray.length(); i++){
+                                for (int i = 0; i < teamArray.length(); i++) {
                                     JSONObject jsonObject = teamArray.getJSONObject(i);
                                     TeamModel teamModel = new TeamModel();
                                     teamModel.setTeamMemberName(jsonObject.getString("NAME"));
@@ -205,7 +219,8 @@ public class Team extends BaseActivity {
         }*/;
         VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
     }
-    public void startDate(){
+
+    public void startDate() {
         ll_start_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,12 +232,13 @@ public class Team extends BaseActivity {
                         tv_startdate.setText(dateFormatter.format(newDate.getTime()));
                     }
 
-                },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+                }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
                 startDatePickerDialog.show();
             }
         });
     }
-    public void endDate(){
+
+    public void endDate() {
         Calendar newCalendar = Calendar.getInstance();
         startDatePickerDialog = new DatePickerDialog(Team.this, new DatePickerDialog.OnDateSetListener() {
 
@@ -232,10 +248,11 @@ public class Team extends BaseActivity {
                 tv_enddate.setText(dateFormatter.format(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
         startDatePickerDialog.show();
     }
-    public void ShowRole(){
+
+    public void ShowRole() {
         String url = "https://api.myjson.com/bins/crx8m";
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -243,15 +260,15 @@ public class Team extends BaseActivity {
                     public void onResponse(JSONObject response) {
                         JSONObject object = response;
                         try {
-                            if(object.getString("status").equals("true")){
+                            if (object.getString("status").equals("true")) {
                                 Log.d("!!!Role", object.toString());
                                 JSONArray jsonArray = object.getJSONArray("response");
                                 Log.d("!!!Role", response.toString());
-                                for(int i = 0; i<jsonArray.length();i++){
+                                for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                //    RoleModel roleModel = new RoleModel();
-                                //    roleModel.setRoleId(jsonObject.getString("ROLE_ID"));
-                                //    roleModel.setRoleName(jsonObject.getString("ROLE_NAME"));
+                                    //    RoleModel roleModel = new RoleModel();
+                                    //    roleModel.setRoleId(jsonObject.getString("ROLE_ID"));
+                                    //    roleModel.setRoleName(jsonObject.getString("ROLE_NAME"));
                                     roleArrayList.add(jsonObject.getString("ROLE_NAME"));
                                     Log.i("!!!roleArrayList", roleArrayList.toString());
                                 }
@@ -273,50 +290,56 @@ public class Team extends BaseActivity {
             }
         }*/);
         VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
+    }
 
-    }
-    public void ShowRoleName(){
-       /* ll_role.setOnClickListener(new View.OnClickListener() {
+    public void ShowRoleName() {
+
+        Log.i("!!!roletext", tv_role.getText().toString());
+
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(Team.this);
+        mBuilder.setTitle("Please Select Roles");
+        mBuilder.setMultiChoiceItems(listRoles, chekedItemsRoles, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
-            public void onClick(View v) {*/
-                AlertDialog.Builder mBuilder =new AlertDialog.Builder(Team.this);
-                mBuilder.setTitle("Please Select Roles");
-                mBuilder.setMultiChoiceItems(listRoles, chekedItemsRoles, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if(isChecked){
-                            mUserItemsRoles.add(which);
-                        }else {
-                            mUserItemsRoles.remove(Integer.valueOf(which));
-                        }
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                Log.i("!!!!itemsarr", mUserItemsRoles.toString());
+                Log.i("!!!!text", tv_role.getText().toString());
+            //    Log.i("!!!!string", item);
+                if (isChecked) {
+                        mUserItemsRoles.add(which);
+                    }else {
+                        mUserItemsRoles.remove(Integer.valueOf(which));
+                //        mUserItemsRoles.remove(which);
+
+                }
+            }
+        });
+        mBuilder.setCancelable(false);
+        mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String item = "";
+                for (int j = 0; j < mUserItemsRoles.size(); j++) {
+                    item = item + listRoles[mUserItemsRoles.get(j)];
+                    if (j != mUserItemsRoles.size() - 1) {
+                        item = item + ",";
                     }
-                });
-                mBuilder.setCancelable(false);
-                mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        for(int j = 0 ;j < mUserItemsRoles.size(); j++){
-                            item = item + listRoles[mUserItemsRoles.get(j)];
-                            if(j != mUserItemsRoles.size() - 1 ){
-                                item = item + ",";
-                            }
-                        }
-                    //    String some = item.replaceAll("\\s","");
-                        tv_role.setText(item);
-                    }
-                });
-                mBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog mDialog = mBuilder.create();
-                mDialog.show();
-            /*}
-        });*/
+                }
+                //    String some = item.replaceAll("\\s","");
+                tv_role.setText(item);
+
+            }
+        });
+        mBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
     }
-    public void ShowOrganization(){
+
+    public void ShowOrganization() {
         String url = "https://api.myjson.com/bins/jc6pu";
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -324,14 +347,14 @@ public class Team extends BaseActivity {
                     public void onResponse(JSONObject response) {
                         JSONObject object = response;
                         try {
-                            if(object.getString("status").equals("true")){
-                              Log.d("!!!Organisation", object.toString());
-                              JSONArray jsonArray = object.getJSONArray("response");
-                              Log.d("!!!Org", object.toString());
-                              for(int i = 0; i < jsonArray.length();i++){
-                                  JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                  organisationArrayList.add(jsonObject.getString("ORGANIZATION"));
-                              }
+                            if (object.getString("status").equals("true")) {
+                                Log.d("!!!Organisation", object.toString());
+                                JSONArray jsonArray = object.getJSONArray("response");
+                                Log.d("!!!Org", object.toString());
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    organisationArrayList.add(jsonObject.getString("ORGANIZATION"));
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -353,13 +376,14 @@ public class Team extends BaseActivity {
         }*/;
         VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
     }
-    public void ShowOrganisationName(){
+
+    public void ShowOrganisationName() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(Team.this);
-        mBuilder.setTitle("Please Select Organisaiton");
+        mBuilder.setTitle("Please Select Organization");
         mBuilder.setMultiChoiceItems(listOrganisation, chekedItemsOrganisation, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     mUserItemsOrganisation.add(which);
                 } else {
                     mUserItemsOrganisation.remove(Integer.valueOf(which));
@@ -370,9 +394,10 @@ public class Team extends BaseActivity {
         mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                for(int j = 0; j < mUserItemsOrganisation.size(); j++){
+                String itemOrg = "";
+                for (int j = 0; j < mUserItemsOrganisation.size(); j++) {
                     itemOrg = itemOrg + listOrganisation[mUserItemsOrganisation.get(j)];
-                    if(j != mUserItemsOrganisation.size() - 1){
+                    if (j != mUserItemsOrganisation.size() - 1) {
                         itemOrg = itemOrg + ",";
                     }
                 }
@@ -388,7 +413,8 @@ public class Team extends BaseActivity {
         AlertDialog mDialog = mBuilder.create();
         mDialog.show();
     }
-    public void ShowLocation(){
+
+    public void ShowLocation() {
         String url = "https://api.myjson.com/bins/131mua";
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -396,11 +422,11 @@ public class Team extends BaseActivity {
                     public void onResponse(JSONObject response) {
                         JSONObject object = response;
                         try {
-                            if(object.getString("status").equals("true")){
+                            if (object.getString("status").equals("true")) {
                                 Log.d("!!!Location", object.toString());
                                 JSONArray jsonArray = object.getJSONArray("response");
                                 Log.d("!!!Location", object.toString());
-                                for(int i = 0; i < jsonArray.length(); i++){
+                                for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                                     locationArrayList.add(jsonObject.getString("LOCATION"));
                                 }
@@ -425,13 +451,14 @@ public class Team extends BaseActivity {
         }*/;
         VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
     }
-    public void ShowLocationName(){
+
+    public void ShowLocationName() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(Team.this);
         mBuilder.setTitle("Please Select Location");
         mBuilder.setMultiChoiceItems(listLocation, checkedItemsLocation, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     mUserItemsLocation.add(which);
                 } else {
                     mUserItemsLocation.remove(Integer.valueOf(which));
@@ -442,9 +469,10 @@ public class Team extends BaseActivity {
         mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                for(int j = 0; j < mUserItemsLocation.size();j++){
+                String itemLoc = "";
+                for (int j = 0; j < mUserItemsLocation.size(); j++) {
                     itemLoc = itemLoc + listLocation[mUserItemsLocation.get(j)];
-                    if(j != mUserItemsLocation.size() - 1){
+                    if (j != mUserItemsLocation.size() - 1) {
                         itemLoc = itemLoc + ",";
                     }
                 }
@@ -460,14 +488,20 @@ public class Team extends BaseActivity {
         AlertDialog mDialog = mBuilder.create();
         mDialog.show();
     }
-    public void SubmitData(){
 
-        String itemAll = tv_role.getText().toString()+","+tv_organisation.getText().toString()+","+tv_startdate.getText().toString()+","+tv_enddate.getText().toString()+","+tv_location.getText().toString();
-        Log.i("AllItems",itemAll);
+    public void SubmitData() {
+
+        String itemAll = tv_role.getText().toString() + "," + tv_organisation.getText().toString() + "," + tv_startdate.getText().toString() + "," + tv_enddate.getText().toString() + "," + tv_location.getText().toString();
+        Log.i("AllItems", itemAll);
         Toast.makeText(this, itemAll, Toast.LENGTH_SHORT).show();
         ll_filter_list.setVisibility(View.GONE);
         count = 0;
         teamModelArray.clear();
+        tv_role.setText("");
+        tv_organisation.setText("");
+        tv_startdate.setText("");
+        tv_enddate.setText("");
+        tv_location.setText("");
 
         String url = "https://api.myjson.com/bins/bwi56";
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -476,11 +510,11 @@ public class Team extends BaseActivity {
                     public void onResponse(JSONObject response) {
                         JSONObject object = response;
                         try {
-                            if(object.getString("status").equals("true")){
+                            if (object.getString("status").equals("true")) {
                                 Log.d("!!! teamList", object.toString());
                                 JSONArray teamArray = object.getJSONArray("response");
                                 Log.d("!!! List", response.toString());
-                                for(int i = 0; i < teamArray.length(); i++){
+                                for (int i = 0; i < teamArray.length(); i++) {
                                     JSONObject jsonObject = teamArray.getJSONObject(i);
                                     TeamModel teamModel = new TeamModel();
                                     teamModel.setTeamMemberName(jsonObject.getString("NAME"));
@@ -510,7 +544,5 @@ public class Team extends BaseActivity {
             }
         }*/;
         VolleySingleton.getInstance(this).addToRequestQueue(objectRequest);
-
-
     }
 }
